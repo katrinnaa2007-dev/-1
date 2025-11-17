@@ -1,0 +1,46 @@
+c++
+#include <iostream>
+#include <vector>
+#include <string>
+
+class TreeNode {
+public:
+    std::string value;
+    std::vector<TreeNode*> children;
+    
+    TreeNode(std::string val) : value(val) {}
+    
+    void addChild(TreeNode* child) {
+        children.push_back(child);
+    }
+};
+
+class Tree {
+public:
+    TreeNode* root;
+    
+    Tree() : root(nullptr) {}
+    
+    std::vector<std::string> findPath(std::string target) {
+        std::vector<std::string> path;
+        if (dfsFindPath(root, target, path)) {
+            return path;
+        }
+        return {};
+    }
+    
+private:
+    bool dfsFindPath(TreeNode* node, std::string target, std::vector<std::string>& path) {
+        if (!node) return false;
+        
+        path.push_back(node->value);
+        if (node->value == target) return true;
+        
+        for (TreeNode* child : node->children) {
+            if (dfsFindPath(child, target, path)) return true;
+        }
+        
+        path.pop_back();
+        return false;
+    }
+};
